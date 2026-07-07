@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DTMLAK | Manufacturing Intelligence</title>
+  <style>
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #f5f5f7;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6e6e73;
+  --line: #d9d9df;
+  --blue: #0066cc;
+  --dark: #101828;
+  --soft: #fbfbfd;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Arial, sans-serif;
+}
+
+.nav {
+  height: 64px;
+  padding: 0 48px;
+  background: rgba(245, 245, 247, 0.88);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  backdrop-filter: blur(18px);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.brand span {
+  display: block;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.brand small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 1px;
+}
+
+.nav nav {
+  display: flex;
+  gap: 24px;
+}
+
+.nav button {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  opacity: 0.72;
+}
+
+.nav button:hover {
+  opacity: 1;
+}
+
+.creator {
+  justify-self: end;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.hero {
+  min-height: 700px;
+  padding: 92px 48px 70px;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 54px;
+  align-items: center;
+  background:
+    radial-gradient(circle at 78% 32%, rgba(0,102,204,0.17), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+}
+
+.kicker {
+  margin: 0 0 14px;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 850;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 860px;
+  margin: 0;
+  font-size: clamp(56px, 7.4vw, 104px);
+  line-height: 0.94;
+  letter-spacing: -0.075em;
+}
+
+.subtitle {
+  max-width: 760px;
+  margin: 28px 0 0;
+  color: var(--muted);
+  font-size: 23px;
+  line-height: 1.45;
+  letter-spacing: -0.025em;
+}
+
+.hero-actions {
+  margin-top: 34px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-actions button {
+  border: none;
+  border-radius: 999px;
+  padding: 14px 23px;
+  background: var(--blue);
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.hero-actions .ghost {
+  background: transparent;
+  color: var(--blue);
+  border: 1px solid rgba(0,102,204,0.32);
+}
+
+.hero-panel {
+  background: #111827;
+  color: white;
+  border-radius: 34px;
+  padding: 32px;
+  box-shadow: 0 34px 90px rgba(16,24,40,0.24);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #d0d5dd;
+  font-size: 14px;
+}
+
+.panel-header strong {
+  color: white;
+}
+
+.preview-risk {
+  margin-top: 42px;
+  font-size: 96px;
+  font-weight: 950;
+  letter-spacing: -0.075em;
+  line-height: 0.9;
+}
+
+.preview-label {
+  margin-top: 10px;
+  color: #fecaca;
+  font-weight: 800;
+}
+
+.preview-bar {
+  height: 12px;
+  background: rgba(255,255,255,0.14);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 28px 0;
+}
+
+.preview-bar div {
+  width: 87%;
+  height: 100%;
+  background: linear-gradient(90deg, #60a5fa, white);
+  border-radius: 999px;
+}
+
+.preview-table {
+  display: grid;
+  gap: 12px;
+}
+
+.preview-table div {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.preview-table span {
+  display: block;
+  color: #98a2b3;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.preview-table strong {
+  font-size: 18px;
+  letter-spacing: -0.025em;
+}
+
+.metrics {
+  max-width: 1180px;
+  margin: -46px auto 0;
+  padding: 0 20px 52px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  position: relative;
+}
+
+.metrics div {
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 18px 46px rgba(0,0,0,0.07);
+}
+
+.metrics span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.metrics strong {
+  font-size: 23px;
+  letter-spacing: -0.04em;
+}
+
+.section-menu {
+  max-width: 980px;
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 0 20px;
+}
+
+.section-menu button {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--text);
+  padding: 14px 6px 10px;
+  font-size: 18px;
+  font-weight: 760;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.section-menu button:hover {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+}
+
+.content {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px 70px;
+}
+
+.click-section {
+  border-top: 1px solid var(--line);
+}
+
+.click-section h2 {
+  margin: 0;
+  padding: 30px 0;
+  font-size: clamp(34px, 4.4vw, 58px);
+  line-height: 1;
+  letter-spacing: -0.06em;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 9px;
+  text-decoration-thickness: 2px;
+}
+
+.click-section h2:hover {
+  color: var(--blue);
+}
+
+.section-body {
+  display: none;
+  padding: 0 0 44px;
+}
+
+.click-section.active .section-body {
+  display: block;
+}
+
+.section-text {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.55;
+  max-width: 820px;
+  margin: 0 0 24px;
+}
+
+.app-grid,
+.insight-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 28px;
+  padding: 26px;
+  box-shadow: 0 18px 46px rgba(0,0,0,0.07);
+}
+
+.card-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: baseline;
+  margin-bottom: 22px;
+}
+
+.card-title span {
+  font-size: 25px;
+  font-weight: 850;
+  letter-spacing: -0.04em;
+}
+
+.card-title small {
+  color: var(--muted);
+}
+
+.input-table {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  border-bottom: 1px solid var(--line);
+  min-height: 56px;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row label {
+  padding: 17px;
+  background: var(--soft);
+  border-right: 1px solid var(--line);
+  font-weight: 750;
+  color: #424245;
+}
+
+.row input,
+.row select {
+  border: none;
+  outline: none;
+  padding: 15px 17px;
+  font-size: 15px;
+  background: white;
+}
+
+.predict-button {
+  width: 100%;
+  margin-top: 18px;
+  border: none;
+  border-radius: 16px;
+  padding: 15px;
+  background: var(--dark);
+  color: white;
+  font-size: 15px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.risk-status {
+  width: fit-content;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #fff1f2;
+  color: #b42318;
+  font-size: 13px;
+  font-weight: 850;
+  margin-bottom: 16px;
+}
+
+.risk-status.low {
+  background: #ecfdf3;
+  color: #067647;
+}
+
+.risk-number {
+  font-size: 92px;
+  font-weight: 950;
+  line-height: 0.95;
+  letter-spacing: -0.075em;
+}
+
+.progress {
+  height: 12px;
+  background: #e5e5ea;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 24px 0;
+}
+
+#bar-fill {
+  height: 100%;
+  width: 87%;
+  background: var(--blue);
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
+.recommend-box {
+  background: #f6f7f9;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+
+.recommend-box span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.recommend-box strong {
+  font-size: 22px;
+  letter-spacing: -0.035em;
+}
+
+.result-table,
+.clean-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.result-table th,
+.result-table td,
+.clean-table th,
+.clean-table td {
+  padding: 16px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  line-height: 1.45;
+}
+
+.result-table tr:last-child th,
+.result-table tr:last-child td,
+.clean-table tr:last-child td {
+  border-bottom: none;
+}
+
+.result-table th,
+.clean-table th {
+  background: var(--soft);
+  color: #424245;
+  font-size: 14px;
+}
+
+.result-table td {
+  font-weight: 760;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.bar-row span {
+  font-weight: 760;
+  color: #424245;
+}
+
+.bar-row div {
+  height: 12px;
+  background: #e5e5ea;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar-row b {
+  display: block;
+  height: 100%;
+  background: var(--blue);
+  border-radius: 999px;
+}
+
+.workflow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.workflow div {
+  background: white;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.05);
+}
+
+.workflow span {
+  display: block;
+  color: var(--blue);
+  font-weight: 900;
+  margin-bottom: 22px;
+}
+
+.workflow strong {
+  display: block;
+  font-size: 22px;
+  letter-spacing: -0.035em;
+  margin-bottom: 10px;
+}
+
+.workflow p {
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.project-credit {
+  text-align: center;
+  padding: 86px 48px;
+  background: var(--dark);
+  color: white;
+}
+
+.project-credit p {
+  margin: 0 0 10px;
+  color: #d0d5dd;
+}
+
+.project-credit h2 {
+  margin: 0;
+  font-size: clamp(38px, 5vw, 70px);
+  letter-spacing: -0.065em;
+  line-height: 1;
+}
+
+.project-credit span {
+  display: block;
+  margin-top: 14px;
+  color: #d0d5dd;
+}
+
+@media (max-width: 980px) {
+  .nav {
+    grid-template-columns: 1fr auto;
+  }
+
+  .nav nav {
+    display: none;
+  }
+
+  .hero,
+  .app-grid,
+  .insight-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics,
+  .section-menu,
+  .workflow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .nav,
+  .hero,
+  .project-credit {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .metrics,
+  .section-menu,
+  .workflow {
+    grid-template-columns: 1fr;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .row label {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .card {
+    overflow-x: auto;
+  }
+
+  .clean-table {
+    min-width: 720px;
+  }
+}
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="brand">
+      <span>DTMLAK</span>
+      <small>Manufacturing Intelligence</small>
+    </div>
+    <nav>
+      <button onclick="showSection('prediction')">Prediction</button>
+      <button onclick="showSection('analytics')">Analytics</button>
+      <button onclick="showSection('data')">Data Map</button>
+      <button onclick="showSection('workflow')">Workflow</button>
+    </nav>
+    <div class="creator">AHyeong Kim</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="kicker">LG Energy Solution Michigan · Summer Internship Demo</p>
+        <h1>Predict rework risk before it becomes costly.</h1>
+        <p class="subtitle">
+          DTMLAK is a manufacturing intelligence dashboard that predicts operator rework risk and recommends
+          targeted retraining based on quality, process, shift, training, and experience patterns.
+        </p>
+
+        <div class="hero-actions">
+          <button onclick="showSection('prediction')">Launch Prediction Demo</button>
+          <button class="ghost" onclick="showSection('analytics')">View Model Insights</button>
+        </div>
+      </div>
+
+      <aside class="hero-panel">
+        <div class="panel-header">
+          <span>Live Preview</span>
+          <strong>Risk Engine</strong>
+        </div>
+
+        <div class="preview-risk">87%</div>
+        <div class="preview-label">High Risk</div>
+
+        <div class="preview-bar">
+          <div></div>
+        </div>
+
+        <div class="preview-table">
+          <div>
+            <span>Model</span>
+            <strong>Random Forest</strong>
+          </div>
+          <div>
+            <span>Action</span>
+            <strong>Equipment Setup Retraining</strong>
+          </div>
+          <div>
+            <span>Status</span>
+            <strong>Prediction Ready</strong>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="metrics">
+      <div><span>Model Accuracy</span><strong>86.5%</strong></div>
+      <div><span>Simulated Records</span><strong>1,000</strong></div>
+      <div><span>Main Predictor</span><strong>Training Score</strong></div>
+      <div><span>Decision Output</span><strong>Targeted Retraining</strong></div>
+    </section>
+
+    <section class="section-menu">
+      <button onclick="showSection('prediction')">Prediction Demo</button>
+      <button onclick="showSection('analytics')">Model Insights</button>
+      <button onclick="showSection('data')">Data Map</button>
+      <button onclick="showSection('workflow')">Recommendation Workflow</button>
+    </section>
+
+    <section class="content">
+
+      <article class="click-section active" id="prediction">
+        <h2 onclick="toggleSection('prediction')">Prediction Demo</h2>
+        <div class="section-body">
+          <p class="section-text">Enter operator and quality data below. The dashboard estimates risk probability and recommends a retraining action.</p>
+
+          <div class="app-grid">
+            <div class="card">
+              <div class="card-title"><span>Operator Input</span><small>Manual demo mode</small></div>
+
+              <div class="input-table">
+                <div class="row"><label>Operator ID</label><input id="operatorId" type="text" value="OP-103" /></div>
+                <div class="row"><label>Process</label><select id="process"><option>Equipment Setup</option><option>Cell Loading</option><option>Quality Inspection</option><option>Formation</option><option>Packaging</option></select></div>
+                <div class="row"><label>Operator Level</label><select id="level"><option>New</option><option>Intermediate</option><option>Experienced</option></select></div>
+                <div class="row"><label>Shift</label><select id="shift"><option>Gold Day</option><option>Gold Night</option><option>Blue Day</option><option>Blue Night</option></select></div>
+                <div class="row"><label>Total Units</label><input id="units" type="number" value="120" min="1" /></div>
+                <div class="row"><label>Defect Count</label><input id="defects" type="number" value="6" min="0" /></div>
+                <div class="row"><label>Rework Count</label><input id="rework" type="number" value="5" min="0" /></div>
+                <div class="row"><label>Training Score</label><input id="training" type="number" value="68" min="0" max="100" /></div>
+                <div class="row"><label>Experience Months</label><input id="experience" type="number" value="6" min="1" /></div>
+              </div>
+
+              <button class="predict-button" onclick="predictRisk()">Generate Prediction</button>
+            </div>
+
+            <div class="card result-card">
+              <div class="card-title"><span>Prediction Output</span><small id="operator-output">OP-103</small></div>
+              <div class="risk-status" id="risk-label">High Risk</div>
+              <div class="risk-number" id="probability">87%</div>
+              <div class="progress"><div id="bar-fill"></div></div>
+              <div class="recommend-box"><span>Recommended Action</span><strong id="recommendation">Equipment Setup Retraining</strong></div>
+
+              <table class="result-table">
+                <tr><th>Defect Rate</th><td id="defect-rate">5.0%</td></tr>
+                <tr><th>Rework Rate</th><td id="rework-rate">4.2%</td></tr>
+                <tr><th>Primary Driver</th><td id="primary-driver">Rework Rate</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="click-section" id="analytics">
+        <h2 onclick="toggleSection('analytics')">Model Insights</h2>
+        <div class="section-body">
+          <p class="section-text">The model is designed to provide interpretable manufacturing insights, not just a prediction score.</p>
+          <div class="insight-layout">
+            <div class="card">
+              <div class="card-title"><span>Feature Importance</span><small>Top risk signals</small></div>
+              <div class="bar-row"><span>Training Score</span><div><b style="width:92%"></b></div></div>
+              <div class="bar-row"><span>Rework Rate</span><div><b style="width:78%"></b></div></div>
+              <div class="bar-row"><span>Defect Rate</span><div><b style="width:67%"></b></div></div>
+              <div class="bar-row"><span>Experience Months</span><div><b style="width:50%"></b></div></div>
+              <div class="bar-row"><span>Shift Pattern</span><div><b style="width:39%"></b></div></div>
+            </div>
+
+            <div class="card">
+              <div class="card-title"><span>Operational Summary</span><small>Interpretable findings</small></div>
+              <table class="clean-table">
+                <thead><tr><th>Finding</th><th>Operational Meaning</th></tr></thead>
+                <tbody>
+                  <tr><td>Training score was the strongest predictor.</td><td>Lower scores may indicate targeted retraining needs.</td></tr>
+                  <tr><td>Higher rework and defect rates increased risk.</td><td>Quality issues can be detected before they repeat.</td></tr>
+                  <tr><td>Shift patterns influenced predictions.</td><td>Risk trends can support workforce and process planning.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="click-section" id="data">
+        <h2 onclick="toggleSection('data')">Data Map</h2>
+        <div class="section-body">
+          <p class="section-text">The dashboard organizes quality, rework, training, and operator information into a decision-ready format.</p>
+          <div class="card">
+            <table class="clean-table">
+              <thead><tr><th>Input</th><th>Meaning</th><th>Why It Matters</th></tr></thead>
+              <tbody>
+                <tr><td>Process</td><td>Manufacturing step such as Formation or Equipment Setup</td><td>Connects risk to process-specific retraining</td></tr>
+                <tr><td>Operator Level</td><td>New, Intermediate, or Experienced operator</td><td>Helps estimate learning curve and support needs</td></tr>
+                <tr><td>Shift</td><td>Day or night shift assignment</td><td>Captures shift-based operational patterns</td></tr>
+                <tr><td>Defect Rate</td><td>Percentage of units with quality issues</td><td>Higher defect rate indicates quality risk</td></tr>
+                <tr><td>Rework Rate</td><td>Percentage of units requiring correction</td><td>Higher rework rate increases retraining priority</td></tr>
+                <tr><td>Training Score</td><td>Training performance indicator</td><td>Lower scores may suggest refresher training</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+
+      <article class="click-section" id="workflow">
+        <h2 onclick="toggleSection('workflow')">Recommendation Workflow</h2>
+        <div class="section-body">
+          <p class="section-text">The system turns quality and operator data into an actionable retraining recommendation.</p>
+          <div class="workflow">
+            <div><span>01</span><strong>Collect Data</strong><p>Process, shift, defect, rework, training, and experience records are collected.</p></div>
+            <div><span>02</span><strong>Predict Risk</strong><p>The model estimates risk probability based on quality and operator patterns.</p></div>
+            <div><span>03</span><strong>Recommend Training</strong><p>The system recommends targeted retraining based on the strongest risk driver.</p></div>
+            <div><span>04</span><strong>Improve Efficiency</strong><p>Targeted action can reduce repeated rework and support manufacturing productivity.</p></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="project-credit">
+      <p>LG Energy Solution Michigan</p>
+      <h2>DTMLAK Manufacturing Dashboard</h2>
+      <span>Summer Internship Demo · Created by AHyeong Kim</span>
+    </section>
+  </main>
+
+  <script>
+function showSection(id) {
+  document.querySelectorAll(".click-section").forEach(section => {
+    section.classList.remove("active");
+  });
+
+  const target = document.getElementById(id);
+  target.classList.add("active");
+  target.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function toggleSection(id) {
+  const target = document.getElementById(id);
+  const isActive = target.classList.contains("active");
+
+  document.querySelectorAll(".click-section").forEach(section => {
+    section.classList.remove("active");
+  });
+
+  if (!isActive) {
+    target.classList.add("active");
+  }
+}
+
+function predictRisk() {
+  const operatorId = document.getElementById("operatorId").value || "OP-000";
+  const process = document.getElementById("process").value;
+  const level = document.getElementById("level").value;
+  const shift = document.getElementById("shift").value;
+
+  const units = Math.max(1, Number(document.getElementById("units").value));
+  const defects = Math.max(0, Number(document.getElementById("defects").value));
+  const rework = Math.max(0, Number(document.getElementById("rework").value));
+  const training = Math.min(100, Math.max(0, Number(document.getElementById("training").value)));
+  const experience = Math.max(1, Number(document.getElementById("experience").value));
+
+  const defectRate = defects / units;
+  const reworkRate = rework / units;
+
+  let score = 0;
+  score += defectRate * 3.0;
+  score += reworkRate * 4.0;
+  score += (100 - training) * 0.012;
+  score += Math.max(0, 12 - experience) * 0.006;
+
+  if (level === "New") score += 0.12;
+  if (level === "Experienced") score -= 0.06;
+  if (shift === "Gold Night") score += 0.08;
+  if (shift === "Blue Night") score += 0.04;
+  if (process === "Equipment Setup") score += 0.08;
+  if (process === "Quality Inspection") score += 0.05;
+
+  const probability = Math.min(0.98, Math.max(0.04, score));
+  const probabilityPercent = Math.round(probability * 100);
+  const highRisk = probabilityPercent >= 55;
+
+  let recommendation = "No additional training needed";
+  let driver = "Stable performance pattern";
+
+  if (highRisk) {
+    if (reworkRate > 0.04 && process === "Equipment Setup") {
+      recommendation = "Equipment Setup Retraining";
+      driver = "Rework Rate";
+    } else if (reworkRate > 0.04) {
+      recommendation = process + " Rework Reduction Training";
+      driver = "Rework Rate";
+    } else if (defectRate > 0.055) {
+      recommendation = process + " Quality Control Training";
+      driver = "Defect Rate";
+    } else if (training < 70) {
+      recommendation = "General Process Refresher Training";
+      driver = "Training Score";
+    } else {
+      recommendation = "Supervisor Review Recommended";
+      driver = "Combined Risk Pattern";
+    }
+  }
+
+  const label = document.getElementById("risk-label");
+  label.innerText = highRisk ? "High Risk" : "Low Risk";
+  label.classList.toggle("low", !highRisk);
+
+  document.getElementById("operator-output").innerText = operatorId;
+  document.getElementById("probability").innerText = probabilityPercent + "%";
+  document.getElementById("bar-fill").style.width = probabilityPercent + "%";
+  document.getElementById("defect-rate").innerText = (defectRate * 100).toFixed(1) + "%";
+  document.getElementById("rework-rate").innerText = (reworkRate * 100).toFixed(1) + "%";
+  document.getElementById("recommendation").innerText = recommendation;
+  document.getElementById("primary-driver").innerText = driver;
+}
+
+document.querySelectorAll("input, select").forEach((el) => {
+  el.addEventListener("input", predictRisk);
+  el.addEventListener("change", predictRisk);
+});
+
+predictRisk();
+  </script>
+</body>
+</html>
