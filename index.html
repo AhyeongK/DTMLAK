@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DTMLAK | Manufacturing Intelligence</title>
+  <title>DTMLAK | Predictive Manufacturing Intelligence</title>
   <style>
 * {
   box-sizing: border-box;
@@ -420,6 +420,19 @@ body {
   color: #067647;
 }
 
+.risk-status.moderate {
+  background: #fff7ed;
+  color: #b54708;
+}
+
+.preview-label.low {
+  color: #6ce9a6;
+}
+
+.preview-label.moderate {
+  color: #fdb022;
+}
+
 .risk-number {
   font-size: 92px;
   font-weight: 950;
@@ -677,8 +690,8 @@ body {
           <strong>Risk Engine</strong>
         </div>
 
-        <div class="preview-risk">87%</div>
-        <div class="preview-label">High Risk</div>
+        <div class="preview-risk" id="preview-probability">87%</div>
+        <div class="preview-label" id="preview-label">High Risk</div>
 
         <div class="preview-bar">
           <div></div>
@@ -690,8 +703,8 @@ body {
             <strong>Random Forest</strong>
           </div>
           <div>
-            <span>Action</span>
-            <strong>Equipment Setup Retraining</strong>
+            <span>Recommendation</span>
+            <strong id="preview-recommendation">Equipment Setup Retraining</strong>
           </div>
           <div>
             <span>Status</span>
@@ -830,20 +843,33 @@ body {
 
   <script>
 function showSection(id) {
-  document.querySelectorAll(".click-section").forEach(section => {
+  document.querySelectorAll(".click-section").forEach((section) => {
     section.classList.remove("active");
   });
 
   const target = document.getElementById(id);
+
+  if (!target) {
+    return;
+  }
+
   target.classList.add("active");
-  target.scrollIntoView({ behavior: "smooth", block: "start" });
+  target.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 }
 
 function toggleSection(id) {
   const target = document.getElementById(id);
+
+  if (!target) {
+    return;
+  }
+
   const isActive = target.classList.contains("active");
 
-  document.querySelectorAll(".click-section").forEach(section => {
+  document.querySelectorAll(".click-section").forEach((section) => {
     section.classList.remove("active");
   });
 
@@ -852,79 +878,301 @@ function toggleSection(id) {
   }
 }
 
-function predictRisk() {
-  const operatorId = document.getElementById("operatorId").value || "OP-000";
-  const process = document.getElementById("process").value;
-  const level = document.getElementById("level").value;
-  const shift = document.getElementById("shift").value;
-
-  const units = Math.max(1, Number(document.getElementById("units").value));
-  const defects = Math.max(0, Number(document.getElementById("defects").value));
-  const rework = Math.max(0, Number(document.getElementById("rework").value));
-  const training = Math.min(100, Math.max(0, Number(document.getElementById("training").value)));
-  const experience = Math.max(1, Number(document.getElementById("experience").value));
-
-  const defectRate = defects / units;
-  const reworkRate = rework / units;
-
-  let score = 0;
-  score += defectRate * 3.0;
-  score += reworkRate * 4.0;
-  score += (100 - training) * 0.012;
-  score += Math.max(0, 12 - experience) * 0.006;
-
-  if (level === "New") score += 0.12;
-  if (level === "Experienced") score -= 0.06;
-  if (shift === "Gold Night") score += 0.08;
-  if (shift === "Blue Night") score += 0.04;
-  if (process === "Equipment Setup") score += 0.08;
-  if (process === "Quality Inspection") score += 0.05;
-
-  const probability = Math.min(0.98, Math.max(0.04, score));
-  const probabilityPercent = Math.round(probability * 100);
-  const highRisk = probabilityPercent >= 55;
-
-  let recommendation = "No additional training needed";
-  let driver = "Stable performance pattern";
-
-  if (highRisk) {
-    if (reworkRate > 0.04 && process === "Equipment Setup") {
-      recommendation = "Equipment Setup Retraining";
-      driver = "Rework Rate";
-    } else if (reworkRate > 0.04) {
-      recommendation = process + " Rework Reduction Training";
-      driver = "Rework Rate";
-    } else if (defectRate > 0.055) {
-      recommendation = process + " Quality Control Training";
-      driver = "Defect Rate";
-    } else if (training < 70) {
-      recommendation = "General Process Refresher Training";
-      driver = "Training Score";
-    } else {
-      recommendation = "Supervisor Review Recommended";
-      driver = "Combined Risk Pattern";
-    }
-  }
-
-  const label = document.getElementById("risk-label");
-  label.innerText = highRisk ? "High Risk" : "Low Risk";
-  label.classList.toggle("low", !highRisk);
-
-  document.getElementById("operator-output").innerText = operatorId;
-  document.getElementById("probability").innerText = probabilityPercent + "%";
-  document.getElementById("bar-fill").style.width = probabilityPercent + "%";
-  document.getElementById("defect-rate").innerText = (defectRate * 100).toFixed(1) + "%";
-  document.getElementById("rework-rate").innerText = (reworkRate * 100).toFixed(1) + "%";
-  document.getElementById("recommendation").innerText = recommendation;
-  document.getElementById("primary-driver").innerText = driver;
+function clamp(value, minimum, maximum) {
+  return Math.min(Math.max(value, minimum), maximum);
 }
 
-document.querySelectorAll("input, select").forEach((el) => {
-  el.addEventListener("input", predictRisk);
-  el.addEventListener("change", predictRisk);
+function getRiskLevel(probabilityPercent) {
+  if (probabilityPercent >= 70) {
+    return "High Risk";
+  }
+
+  if (probabilityPercent >= 40) {
+    return "Moderate Risk";
+  }
+
+  return "Low Risk";
+}
+
+function getPrimaryDriver({
+  defectRate,
+  reworkRate,
+  trainingScore,
+  experienceMonths,
+  operatorLevel,
+  shift,
+  process
+}) {
+  const drivers = [
+    {
+      name: "Rework Rate",
+      score: reworkRate * 180
+    },
+    {
+      name: "Defect Rate",
+      score: defectRate * 150
+    },
+    {
+      name: "Training Score",
+      score: Math.max(0, 75 - trainingScore) * 0.08
+    },
+    {
+      name: "Experience",
+      score: Math.max(0, 12 - experienceMonths) * 0.08
+    },
+    {
+      name: "Operator Level",
+      score: operatorLevel === "New" ? 0.75 : 0
+    },
+    {
+      name: "Shift Pattern",
+      score:
+        shift === "Gold Night"
+          ? 0.65
+          : shift === "Blue Night"
+          ? 0.4
+          : 0
+    },
+    {
+      name: "Process Pattern",
+      score:
+        process === "Equipment Setup"
+          ? 0.55
+          : process === "Quality Inspection"
+          ? 0.35
+          : 0
+    }
+  ];
+
+  drivers.sort((a, b) => b.score - a.score);
+
+  return drivers[0].name;
+}
+
+function getRecommendation({
+  riskLevel,
+  process,
+  defectRate,
+  reworkRate,
+  trainingScore,
+  experienceMonths
+}) {
+  if (riskLevel === "Low Risk") {
+    return "No Additional Training Needed";
+  }
+
+  if (trainingScore < 65) {
+    return "General Process Refresher Training";
+  }
+
+  if (experienceMonths < 4) {
+    return "New Operator Coaching";
+  }
+
+  if (reworkRate >= 0.05 && process === "Equipment Setup") {
+    return "Equipment Setup Retraining";
+  }
+
+  if (reworkRate >= 0.05) {
+    return `${process} Rework Reduction Training`;
+  }
+
+  if (defectRate >= 0.06) {
+    return `${process} Quality Control Training`;
+  }
+
+  if (riskLevel === "Moderate Risk") {
+    return "Supervisor Review and Monitoring";
+  }
+
+  return "Targeted Process Retraining";
+}
+
+function calculateRiskProbability({
+  defectRate,
+  reworkRate,
+  trainingScore,
+  experienceMonths,
+  operatorLevel,
+  shift,
+  process
+}) {
+  let score = 10;
+
+  score += defectRate * 350;
+  score += reworkRate * 430;
+
+  score += Math.max(0, 80 - trainingScore) * 0.8;
+  score += Math.max(0, 12 - experienceMonths) * 1.1;
+
+  if (operatorLevel === "New") {
+    score += 9;
+  } else if (operatorLevel === "Intermediate") {
+    score += 3;
+  } else if (operatorLevel === "Experienced") {
+    score -= 5;
+  }
+
+  if (shift === "Gold Night") {
+    score += 7;
+  } else if (shift === "Blue Night") {
+    score += 4;
+  } else if (shift === "Gold Day") {
+    score += 1;
+  }
+
+  if (process === "Equipment Setup") {
+    score += 6;
+  } else if (process === "Quality Inspection") {
+    score += 4;
+  } else if (process === "Formation") {
+    score += 2;
+  }
+
+  return Math.round(clamp(score, 3, 97));
+}
+
+function updateRiskStyle(element, riskLevel) {
+  element.classList.remove("low", "moderate");
+
+  if (riskLevel === "Low Risk") {
+    element.classList.add("low");
+  }
+
+  if (riskLevel === "Moderate Risk") {
+    element.classList.add("moderate");
+  }
+}
+
+function predictRisk() {
+  const operatorId =
+    document.getElementById("operatorId").value.trim() || "OP-000";
+
+  const process = document.getElementById("process").value;
+  const operatorLevel = document.getElementById("level").value;
+  const shift = document.getElementById("shift").value;
+
+  const totalUnits = Math.max(
+    1,
+    Number(document.getElementById("units").value) || 1
+  );
+
+  const defectCount = Math.max(
+    0,
+    Number(document.getElementById("defects").value) || 0
+  );
+
+  const reworkCount = Math.max(
+    0,
+    Number(document.getElementById("rework").value) || 0
+  );
+
+  const trainingScore = clamp(
+    Number(document.getElementById("training").value) || 0,
+    0,
+    100
+  );
+
+  const experienceMonths = Math.max(
+    0,
+    Number(document.getElementById("experience").value) || 0
+  );
+
+  const defectRate = defectCount / totalUnits;
+  const reworkRate = reworkCount / totalUnits;
+
+  const probabilityPercent = calculateRiskProbability({
+    defectRate,
+    reworkRate,
+    trainingScore,
+    experienceMonths,
+    operatorLevel,
+    shift,
+    process
+  });
+
+  const riskLevel = getRiskLevel(probabilityPercent);
+
+  const primaryDriver = getPrimaryDriver({
+    defectRate,
+    reworkRate,
+    trainingScore,
+    experienceMonths,
+    operatorLevel,
+    shift,
+    process
+  });
+
+  const recommendation = getRecommendation({
+    riskLevel,
+    process,
+    defectRate,
+    reworkRate,
+    trainingScore,
+    experienceMonths
+  });
+
+  const riskLabelElement = document.getElementById("risk-label");
+
+  riskLabelElement.innerText = riskLevel;
+  updateRiskStyle(riskLabelElement, riskLevel);
+
+  document.getElementById("operator-output").innerText = operatorId;
+
+  document.getElementById("probability").innerText =
+    `${probabilityPercent}%`;
+
+  document.getElementById("bar-fill").style.width =
+    `${probabilityPercent}%`;
+
+  document.getElementById("defect-rate").innerText =
+    `${(defectRate * 100).toFixed(1)}%`;
+
+  document.getElementById("rework-rate").innerText =
+    `${(reworkRate * 100).toFixed(1)}%`;
+
+  document.getElementById("recommendation").innerText =
+    recommendation;
+
+  document.getElementById("primary-driver").innerText =
+    primaryDriver;
+
+  const previewProbability =
+    document.getElementById("preview-probability");
+
+  const previewLabel =
+    document.getElementById("preview-label");
+
+  const previewRecommendation =
+    document.getElementById("preview-recommendation");
+
+  if (previewProbability) {
+    previewProbability.innerText = `${probabilityPercent}%`;
+  }
+
+  if (previewLabel) {
+    previewLabel.innerText = riskLevel;
+    updateRiskStyle(previewLabel, riskLevel);
+  }
+
+  if (previewRecommendation) {
+    previewRecommendation.innerText = recommendation;
+  }
+
+  const previewBar =
+    document.querySelector(".preview-bar div");
+
+  if (previewBar) {
+    previewBar.style.width = `${probabilityPercent}%`;
+  }
+}
+
+document.querySelectorAll("input, select").forEach((element) => {
+  element.addEventListener("input", predictRisk);
+  element.addEventListener("change", predictRisk);
 });
 
 predictRisk();
-  </script>
+</script>
 </body>
 </html>
