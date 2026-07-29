@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DTMLAK | Predictive Manufacturing Intelligence</title>
+  <title>DTMLAK | Manufacturing Training & Rework Support</title>
   <style>
 * {
   box-sizing: border-box;
@@ -651,93 +651,335 @@ body {
     min-width: 720px;
   }
 }
+
+/* Company presentation additional styles */
+.notice-card {
+  max-width: 1180px;
+  margin: 26px auto 52px;
+  padding: 0 20px;
+}
+
+.notice-card-inner {
+  background: #fffaf0;
+  border: 1px solid #fedf89;
+  border-left: 5px solid #f79009;
+  border-radius: 20px;
+  padding: 20px 22px;
+}
+
+.notice-card-inner strong {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 16px;
+}
+
+.notice-card-inner p {
+  margin: 0;
+  color: #69410d;
+  line-height: 1.55;
+}
+
+.support-package {
+  margin-top: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.support-item {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.support-item span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.support-item strong {
+  display: block;
+  font-size: 18px;
+  letter-spacing: -0.025em;
+}
+
+.support-reason {
+  margin-top: 14px;
+  background: #f6f7f9;
+  border-radius: 18px;
+  padding: 18px;
+  line-height: 1.55;
+  color: #424245;
+}
+
+.business-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.business-card {
+  background: white;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 14px 36px rgba(0,0,0,0.05);
+}
+
+.business-card span {
+  display: block;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 18px;
+}
+
+.business-card strong {
+  display: block;
+  font-size: 22px;
+  letter-spacing: -0.035em;
+  margin-bottom: 10px;
+}
+
+.business-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.technical-note {
+  margin-top: 18px;
+  background: #f6f7f9;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.model-badge {
+  display: inline-block;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: #eff8ff;
+  color: #175cd3;
+  font-size: 13px;
+  font-weight: 850;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.workflow-five {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.workflow-five div {
+  background: white;
+  border-radius: 22px;
+  padding: 22px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.05);
+}
+
+.workflow-five span {
+  display: block;
+  color: var(--blue);
+  font-weight: 900;
+  margin-bottom: 18px;
+}
+
+.workflow-five strong {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 9px;
+  letter-spacing: -0.03em;
+}
+
+.workflow-five p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+@media (max-width: 980px) {
+  .business-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow-five {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .workflow-five {
+    grid-template-columns: 1fr;
+  }
+}
+
   </style>
 </head>
 <body>
   <header class="nav">
-    <div class="brand">
-      <span>DTMLAK</span>
-      <small>Manufacturing Intelligence</small>
-    </div>
-    <nav>
-      <button onclick="showSection('prediction')">Prediction</button>
-      <button onclick="showSection('analytics')">Analytics</button>
-      <button onclick="showSection('data')">Data Map</button>
-      <button onclick="showSection('workflow')">Workflow</button>
-    </nav>
-    <div class="creator">AHyeong Kim</div>
-  </header>
+  <div class="brand">
+    <span>DTMLAK</span>
+    <small>Manufacturing Support Dashboard</small>
+  </div>
+
+  <nav>
+    <button onclick="showSection('prediction')">Live Dashboard</button>
+    <button onclick="showSection('analytics')">Key Indicators</button>
+    <button onclick="showSection('benefits')">Business Value</button>
+    <button onclick="showSection('workflow')">Implementation</button>
+    <button onclick="showSection('technical')">Technical Details</button>
+  </nav>
+
+  <div class="creator">AHyeong Kim</div>
+</header>
 
   <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="kicker">LG Energy Solution Michigan · Summer Internship Demo</p>
-        <h1>Predict rework risk before it becomes costly.</h1>
-        <p class="subtitle">
-          DTMLAK is a manufacturing intelligence dashboard that predicts operator rework risk and recommends
-          targeted retraining based on quality, process, shift, training, and experience patterns.
-        </p>
+  <section class="hero">
+  <div class="hero-copy">
+    <p class="kicker">
+      LG Energy Solution Michigan · Summer Internship Project
+    </p>
 
-        <div class="hero-actions">
-          <button onclick="showSection('prediction')">Launch Prediction Demo</button>
-          <button class="ghost" onclick="showSection('analytics')">View Model Insights</button>
-        </div>
+    <h1>
+      Connect operational signals with the right training support.
+    </h1>
+
+    <p class="subtitle">
+      DTMLAK is a manufacturing support dashboard that organizes quality,
+      rework, training, and experience indicators and connects them with
+      targeted retraining, TIS, and OPL recommendations.
+    </p>
+
+    <div class="hero-actions">
+      <button onclick="showSection('prediction')">
+        Launch Dashboard Demo
+      </button>
+
+      <button class="ghost" onclick="showSection('benefits')">
+        View Business Value
+      </button>
+    </div>
+  </div>
+
+  <aside class="hero-panel">
+    <div class="panel-header">
+      <span>Operational Support Preview</span>
+      <strong>Decision Support</strong>
+    </div>
+
+    <div class="preview-risk" id="preview-probability">87%</div>
+    <div class="preview-label" id="preview-label">
+      High Support Priority
+    </div>
+
+    <div class="preview-bar">
+      <div></div>
+    </div>
+
+    <div class="preview-table">
+      <div>
+        <span>Recommended Support</span>
+        <strong id="preview-recommendation">
+          Equipment Setup Refresher
+        </strong>
       </div>
 
-      <aside class="hero-panel">
-        <div class="panel-header">
-          <span>Live Preview</span>
-          <strong>Risk Engine</strong>
-        </div>
+      <div>
+        <span>Recommended TIS</span>
+        <strong id="preview-tis">
+          Equipment Setup Work Instruction
+        </strong>
+      </div>
 
-        <div class="preview-risk" id="preview-probability">87%</div>
-        <div class="preview-label" id="preview-label">High Risk</div>
+      <div>
+        <span>Recommended OPL</span>
+        <strong id="preview-opl">
+          Critical Alignment Verification
+        </strong>
+      </div>
+    </div>
+  </aside>
+</section>
 
-        <div class="preview-bar">
-          <div></div>
-        </div>
+<section class="notice-card">
+  <div class="notice-card-inner">
+    <strong>Demonstration Scope</strong>
 
-        <div class="preview-table">
-          <div>
-            <span>Model</span>
-            <strong>Random Forest</strong>
-          </div>
-          <div>
-            <span>Recommendation</span>
-            <strong id="preview-recommendation">Equipment Setup Retraining</strong>
-          </div>
-          <div>
-            <span>Status</span>
-            <strong>Prediction Ready</strong>
-          </div>
-        </div>
-      </aside>
-    </section>
+    <p>
+      This prototype uses synthetic demonstration records and does not
+      contain confidential production or employee data. The concept would
+      require validation with approved operational data before workplace use.
+    </p>
+  </div>
+</section>
 
     <section class="metrics">
-      <div><span>Model Accuracy</span><strong>86.5%</strong></div>
-      <div><span>Simulated Records</span><strong>1,000</strong></div>
-      <div><span>Main Predictor</span><strong>Training Score</strong></div>
-      <div><span>Decision Output</span><strong>Targeted Retraining</strong></div>
-    </section>
+  <div>
+    <span>Primary Purpose</span>
+    <strong>Rework Support</strong>
+  </div>
+
+  <div>
+    <span>Demonstration Records</span>
+    <strong>5,000</strong>
+  </div>
+
+  <div>
+    <span>Decision Output</span>
+    <strong>Training Package</strong>
+  </div>
+
+  <div>
+    <span>Document Connection</span>
+    <strong>TIS + OPL</strong>
+  </div>
+</section>
 
     <section class="section-menu">
-      <button onclick="showSection('prediction')">Prediction Demo</button>
-      <button onclick="showSection('analytics')">Model Insights</button>
-      <button onclick="showSection('data')">Data Map</button>
-      <button onclick="showSection('workflow')">Recommendation Workflow</button>
-    </section>
+  <button onclick="showSection('prediction')">
+    Live Dashboard
+  </button>
+
+  <button onclick="showSection('analytics')">
+    Key Indicators
+  </button>
+
+  <button onclick="showSection('benefits')">
+    Business Value
+  </button>
+
+  <button onclick="showSection('workflow')">
+    Implementation
+  </button>
+</section>
 
     <section class="content">
 
       <article class="click-section active" id="prediction">
-        <h2 onclick="toggleSection('prediction')">Prediction Demo</h2>
-        <div class="section-body">
-          <p class="section-text">Enter operator and quality data below. The dashboard estimates risk probability and recommends a retraining action.</p>
+  <h2 onclick="toggleSection('prediction')">
+    Live Support Dashboard
+  </h2>
 
+  <div class="section-body">
+    <p class="section-text">
+      Enter demonstration process and quality information. The dashboard
+      identifies support priority and connects the result with a recommended
+      action, TIS, and OPL.
+    </p>
           <div class="app-grid">
             <div class="card">
-              <div class="card-title"><span>Operator Input</span><small>Manual demo mode</small></div>
+              <div class="card-title">
+                <span>Operational Input</span>
+                <small>Synthetic demonstration</small>
+            </div>
 
               <div class="input-table">
                 <div class="row"><label>Operator ID</label><input id="operatorId" type="text" value="OP-103" /></div>
@@ -751,97 +993,363 @@ body {
                 <div class="row"><label>Experience Months</label><input id="experience" type="number" value="6" min="1" /></div>
               </div>
 
-              <button class="predict-button" onclick="predictRisk()">Generate Prediction</button>
+              <button class="predict-button" onclick="predictRisk()">
+                Generate Support Recommendation
+              </button>
             </div>
 
             <div class="card result-card">
-              <div class="card-title"><span>Prediction Output</span><small id="operator-output">OP-103</small></div>
-              <div class="risk-status" id="risk-label">High Risk</div>
-              <div class="risk-number" id="probability">87%</div>
-              <div class="progress"><div id="bar-fill"></div></div>
-              <div class="recommend-box"><span>Recommended Action</span><strong id="recommendation">Equipment Setup Retraining</strong></div>
+  <div class="card-title">
+    <span>Support Recommendation</span>
+    <small id="operator-output">OP-103</small>
+  </div>
 
-              <table class="result-table">
-                <tr><th>Defect Rate</th><td id="defect-rate">5.0%</td></tr>
-                <tr><th>Rework Rate</th><td id="rework-rate">4.2%</td></tr>
-                <tr><th>Primary Driver</th><td id="primary-driver">Rework Rate</td></tr>
-              </table>
-            </div>
+  <div class="risk-status" id="risk-label">
+    High Support Priority
+  </div>
+
+  <div class="risk-number" id="probability">87%</div>
+
+  <div class="progress">
+    <div id="bar-fill"></div>
+  </div>
+
+  <div class="recommend-box">
+    <span>Recommended Action</span>
+    <strong id="recommendation">
+      Equipment Setup Refresher
+    </strong>
+  </div>
+
+  <table class="result-table">
+    <tr>
+      <th>Defect Rate</th>
+      <td id="defect-rate">5.0%</td>
+    </tr>
+
+    <tr>
+      <th>Rework Rate</th>
+      <td id="rework-rate">4.2%</td>
+    </tr>
+
+    <tr>
+      <th>Key Indicator</th>
+      <td id="primary-driver">Rework Rate</td>
+    </tr>
+  </table>
+
+  <div class="support-package">
+    <div class="support-item">
+      <span>Recommended TIS</span>
+      <strong id="recommended-tis">
+        Equipment Setup Standard Work Instruction
+      </strong>
+    </div>
+
+    <div class="support-item">
+      <span>Recommended OPL</span>
+      <strong id="recommended-opl">
+        Critical Alignment Verification
+      </strong>
+    </div>
+  </div>
+
+  <div class="support-reason">
+    <strong>Why this package was recommended</strong>
+
+    <div id="recommendation-reason">
+      Elevated rework indicators were identified for the selected process.
+    </div>
+  </div>
+</div>
           </div>
         </div>
       </article>
 
       <article class="click-section" id="analytics">
-        <h2 onclick="toggleSection('analytics')">Model Insights</h2>
+        <h2 onclick="toggleSection('analytics')">
+          Key Operational Indicators
+        </h2>
+
         <div class="section-body">
-          <p class="section-text">The model is designed to provide interpretable manufacturing insights, not just a prediction score.</p>
+          <p class="section-text">
+            The dashboard combines multiple indicators instead of relying on a single quality result. These indicators help explain why additional process support may be recommended.
+          </p>
+
           <div class="insight-layout">
             <div class="card">
-              <div class="card-title"><span>Feature Importance</span><small>Top risk signals</small></div>
-              <div class="bar-row"><span>Training Score</span><div><b style="width:92%"></b></div></div>
-              <div class="bar-row"><span>Rework Rate</span><div><b style="width:78%"></b></div></div>
-              <div class="bar-row"><span>Defect Rate</span><div><b style="width:67%"></b></div></div>
-              <div class="bar-row"><span>Experience Months</span><div><b style="width:50%"></b></div></div>
-              <div class="bar-row"><span>Shift Pattern</span><div><b style="width:39%"></b></div></div>
+              <div class="card-title">
+                <span>Support Indicators</span>
+                <small>Demonstration priorities</small>
+              </div>
+
+              <div class="bar-row">
+                <span>Training Readiness</span>
+                <div><b style="width:92%"></b></div>
+              </div>
+
+              <div class="bar-row">
+                <span>Rework Trend</span><div>
+                  <b style="width:78%"></b></div>
+                </div>
+
+              <div class="bar-row">
+                <span>Defect Trend</span><div>
+                  <b style="width:67%"></b></div>
+                </div>
+
+              <div class="bar-row">
+                <span>Process Experience</span><div>
+                  <b style="width:50%"></b></div>
+                </div>
+
+              <div class="bar-row">
+                <span>Shift Pattern</span>
+                <div><b style="width:39%"></b></div>
+                </div>
             </div>
 
             <div class="card">
-              <div class="card-title"><span>Operational Summary</span><small>Interpretable findings</small></div>
+              <div class="card-title">
+                <span>Operational Interpretation</span>
+                <small>How the indicators are used</small>
+              </div>
+
               <table class="clean-table">
-                <thead><tr><th>Finding</th><th>Operational Meaning</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>Indicator</th>
+                    <th>Possible Support Response</th>
+                  </tr>
+                </thead>
+
                 <tbody>
-                  <tr><td>Training score was the strongest predictor.</td><td>Lower scores may indicate targeted retraining needs.</td></tr>
-                  <tr><td>Higher rework and defect rates increased risk.</td><td>Quality issues can be detected before they repeat.</td></tr>
-                  <tr><td>Shift patterns influenced predictions.</td><td>Risk trends can support workforce and process planning.</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </article>
+                  <tr>
+                    <td>Lower training readiness</td>
+                    <td>Recommend process refresher or coaching.</td>
+                  </tr>
 
-      <article class="click-section" id="data">
-        <h2 onclick="toggleSection('data')">Data Map</h2>
-        <div class="section-body">
-          <p class="section-text">The dashboard organizes quality, rework, training, and operator information into a decision-ready format.</p>
-          <div class="card">
-            <table class="clean-table">
-              <thead><tr><th>Input</th><th>Meaning</th><th>Why It Matters</th></tr></thead>
-              <tbody>
-                <tr><td>Process</td><td>Manufacturing step such as Formation or Equipment Setup</td><td>Connects risk to process-specific retraining</td></tr>
-                <tr><td>Operator Level</td><td>New, Intermediate, or Experienced operator</td><td>Helps estimate learning curve and support needs</td></tr>
-                <tr><td>Shift</td><td>Day or night shift assignment</td><td>Captures shift-based operational patterns</td></tr>
-                <tr><td>Defect Rate</td><td>Percentage of units with quality issues</td><td>Higher defect rate indicates quality risk</td></tr>
-                <tr><td>Rework Rate</td><td>Percentage of units requiring correction</td><td>Higher rework rate increases retraining priority</td></tr>
-                <tr><td>Training Score</td><td>Training performance indicator</td><td>Lower scores may suggest refresher training</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </article>
+            <tr>
+              <td>Elevated rework trend</td>
+              <td>Review the relevant process TIS and critical OPL.</td>
+            </tr>
 
-      <article class="click-section" id="workflow">
-        <h2 onclick="toggleSection('workflow')">Recommendation Workflow</h2>
-        <div class="section-body">
-          <p class="section-text">The system turns quality and operator data into an actionable retraining recommendation.</p>
-          <div class="workflow">
-            <div><span>01</span><strong>Collect Data</strong><p>Process, shift, defect, rework, training, and experience records are collected.</p></div>
-            <div><span>02</span><strong>Predict Risk</strong><p>The model estimates risk probability based on quality and operator patterns.</p></div>
-            <div><span>03</span><strong>Recommend Training</strong><p>The system recommends targeted retraining based on the strongest risk driver.</p></div>
-            <div><span>04</span><strong>Improve Efficiency</strong><p>Targeted action can reduce repeated rework and support manufacturing productivity.</p></div>
-          </div>
-        </div>
-      </article>
-    </section>
+            <tr>
+              <td>Limited process experience</td>
+              <td>Provide additional supervisor or peer support.</td>
+            </tr>
 
-    <section class="project-credit">
-      <p>LG Energy Solution Michigan</p>
-      <h2>DTMLAK Manufacturing Dashboard</h2>
-      <span>Summer Internship Project · Created by AHyeong Kim</span>
-    </section>
-  </main>
+            <tr>
+              <td>Model disagreement</td>
+              <td>Route the result for manual review rather than automatic action.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</article>
 
-  <script>
+      
+<article class="click-section" id="benefits">
+  <h2 onclick="toggleSection('benefits')">
+    Business Value
+  </h2>
+
+  <div class="section-body">
+    <p class="section-text">
+      The proposed dashboard is intended to help teams move from scattered
+      operational information to a clear and consistent support workflow.
+    </p>
+
+    <div class="business-grid">
+      <div class="business-card">
+        <span>01</span>
+        <strong>Faster Identification</strong>
+        <p>
+          Highlight potential support needs before the same rework pattern
+          continues across additional units.
+        </p>
+      </div>
+
+      <div class="business-card">
+        <span>02</span>
+        <strong>Consistent Support</strong>
+        <p>
+          Apply the same recommendation logic across processes instead of
+          relying only on individual judgment.
+        </p>
+      </div>
+
+      <div class="business-card">
+        <span>03</span>
+        <strong>Faster Document Access</strong>
+        <p>
+          Connect an identified process need directly with the relevant TIS
+          and OPL.
+        </p>
+      </div>
+
+      <div class="business-card">
+        <span>04</span>
+        <strong>Focused Retraining</strong>
+        <p>
+          Recommend process-specific refreshers instead of repeating broad
+          training for every situation.
+        </p>
+      </div>
+
+      <div class="business-card">
+        <span>05</span>
+        <strong>Supervisor Visibility</strong>
+        <p>
+          Present key quality, training, and experience indicators in one
+          decision-ready view.
+        </p>
+      </div>
+
+      <div class="business-card">
+        <span>06</span>
+        <strong>Measurable Pilot</strong>
+        <p>
+          Support a future pilot that compares rework and training outcomes
+          before and after implementation.
+        </p>
+      </div>
+    </div>
+  </div>
+</article>
+
+<article class="click-section" id="workflow">
+  <h2 onclick="toggleSection('workflow')">
+    Proposed Implementation
+  </h2>
+
+  <div class="section-body">
+    <p class="section-text">
+      A practical implementation would begin with a limited pilot and require
+      validation by process, quality, training, and data owners.
+    </p>
+
+    <div class="workflow-five">
+      <div>
+        <span>01</span>
+        <strong>Collect Approved Data</strong>
+        <p>
+          Use approved quality, rework, training, and experience records.
+        </p>
+      </div>
+
+      <div>
+        <span>02</span>
+        <strong>Review Indicators</strong>
+        <p>
+          Confirm meaningful thresholds and variables with process experts.
+        </p>
+      </div>
+
+      <div>
+        <span>03</span>
+        <strong>Recommend Support</strong>
+        <p>
+          Generate a process-specific refresher or supervisor review.
+        </p>
+      </div>
+
+      <div>
+        <span>04</span>
+        <strong>Connect TIS / OPL</strong>
+        <p>
+          Link the recommendation with approved work instructions.
+        </p>
+      </div>
+
+      <div>
+        <span>05</span>
+        <strong>Measure Outcomes</strong>
+        <p>
+          Compare rework, retraining, and process outcomes during the pilot.
+        </p>
+      </div>
+    </div>
+  </div>
+</article>
+
+<article class="click-section" id="technical">
+  <h2 onclick="toggleSection('technical')">
+    Technical Details
+  </h2>
+
+  <div class="section-body">
+    <p class="section-text">
+      Two classification methods were tested to demonstrate how different
+      prediction approaches could support the same operational workflow.
+      Technical results are secondary to the business use case.
+    </p>
+
+    <div class="card">
+      <div class="card-title">
+        <span>Prediction Method Review</span>
+        <small>Synthetic demonstration data</small>
+      </div>
+
+      <div>
+        <span class="model-badge">Random Forest</span>
+        <span class="model-badge">XGBoost</span>
+      </div>
+
+      <table class="clean-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Overall Accuracy</th>
+            <th>High-Priority Detection</th>
+            <th>Demonstration Use</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Random Forest</td>
+            <td>69.8%</td>
+            <td>56.3%</td>
+            <td>Selected for balanced support identification</td>
+          </tr>
+
+          <tr>
+            <td>XGBoost</td>
+            <td>71.0%</td>
+            <td>44.3%</td>
+            <td>Used as a comparison method</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="technical-note">
+        These results show performance on synthetic demonstration data only.
+        They do not represent validation on actual production operations.
+        Any workplace implementation would require approved data, expert
+        review, bias assessment, and pilot testing.
+      </div>
+    </div>
+  </div>
+</article>
+
+<section class="project-credit">
+  <p>Manufacturing Training and Rework Support Concept</p>
+
+  <h2>DTMLAK Support Dashboard</h2>
+
+  <span>
+    Summer Internship Project · Created by AHyeong Kim ·
+    Synthetic Demonstration Data
+  </span>
+</section>
+
+
+</main>
+
+<script>
 function showSection(id) {
   document.querySelectorAll(".click-section").forEach((section) => {
     section.classList.remove("active");
@@ -884,14 +1392,14 @@ function clamp(value, minimum, maximum) {
 
 function getRiskLevel(probabilityPercent) {
   if (probabilityPercent >= 70) {
-    return "High Risk";
+    return "High Support Priority";
   }
 
   if (probabilityPercent >= 40) {
-    return "Moderate Risk";
+    return "Moderate Support Priority";
   }
 
-  return "Low Risk";
+  return "Low Support Priority";
 }
 
 function getPrimaryDriver({
@@ -916,14 +1424,8 @@ function getPrimaryDriver({
       name: "Training Score",
       score: Math.max(0, 75 - trainingScore) * 0.08
     },
-    {
-      name: "Experience",
-      score: Math.max(0, 12 - experienceMonths) * 0.08
-    },
-    {
-      name: "Operator Level",
-      score: operatorLevel === "New" ? 0.75 : 0
-    },
+    {name: "Experience", score: Math.max(0, 12 - experienceMonths) * 0.08},
+    {name: "Operator Level",score: operatorLevel === "New" ? 0.75 : 0},
     {
       name: "Shift Pattern",
       score:
@@ -957,12 +1459,12 @@ function getRecommendation({
   trainingScore,
   experienceMonths
 }) {
-  if (riskLevel === "Low Risk") {
-    return "No Additional Training Needed";
+  if (riskLevel === "Low Support Priority") {
+    return "Continue Standard Process Monitoring";
   }
 
   if (trainingScore < 65) {
-    return "General Process Refresher Training";
+    return "General Process Refresher";
   }
 
   if (experienceMonths < 4) {
@@ -970,7 +1472,7 @@ function getRecommendation({
   }
 
   if (reworkRate >= 0.05 && process === "Equipment Setup") {
-    return "Equipment Setup Retraining";
+    return "Equipment Setup Refresher";
   }
 
   if (reworkRate >= 0.05) {
@@ -981,11 +1483,61 @@ function getRecommendation({
     return `${process} Quality Control Training`;
   }
 
-  if (riskLevel === "Moderate Risk") {
-    return "Supervisor Review and Monitoring";
+  if (riskLevel === "Moderate Support Priority") {
+    return "Supervisor Review Recommended";
   }
 
-  return "Targeted Process Retraining";
+  return "Targeted Process Support";
+}
+
+function getLearningPackage(process, primaryDriver, riskLevel) {
+  const packages = {
+    "Equipment Setup": {
+      tis: "Equipment Setup Standard Work Instruction",
+      opl: "Critical Alignment Verification"
+    },
+
+    "Cell Loading": {
+      tis: "Cell Loading Standard Work Instruction",
+      opl: "Correct Cell Positioning"
+    },
+
+    "Quality Inspection": {
+      tis: "Quality Inspection Procedure",
+      opl: "Common Visual Defect Identification"
+    },
+
+    "Formation": {
+      tis: "Formation Process Work Instruction",
+      opl: "Voltage Verification and Abnormal Result Review"
+    },
+
+    "Packaging": {
+      tis: "Packaging Standard Work Instruction",
+      opl: "Final Packaging Quality Check"
+    }
+  };
+
+  const selectedPackage = packages[process] || {
+    tis: "General Process Standard Work Instruction",
+    opl: "Critical Process Verification"
+  };
+
+  let reason;
+
+  if (riskLevel === "Low Support Priority") {
+    reason =
+      "Current indicators do not show an immediate need for additional support. Continue standard monitoring.";
+  } else {
+    reason =
+      `${primaryDriver} was identified as the strongest current support indicator for the ${process} process.`;
+  }
+
+  return {
+    tis: selectedPackage.tis,
+    opl: selectedPackage.opl,
+    reason: reason
+  };
 }
 
 function calculateRiskProbability({
@@ -1035,11 +1587,11 @@ function calculateRiskProbability({
 function updateRiskStyle(element, riskLevel) {
   element.classList.remove("low", "moderate");
 
-  if (riskLevel === "Low Risk") {
+  if (riskLevel === "Low Support Priority") {
     element.classList.add("low");
   }
 
-  if (riskLevel === "Moderate Risk") {
+  if (riskLevel === "Moderate Support Priority") {
     element.classList.add("moderate");
   }
 }
@@ -1112,6 +1664,12 @@ function predictRisk() {
     experienceMonths
   });
 
+  const learningPackage = getLearningPackage(
+  process,
+  primaryDriver,
+  riskLevel
+);
+
   const riskLabelElement = document.getElementById("risk-label");
 
   riskLabelElement.innerText = riskLevel;
@@ -1149,6 +1707,41 @@ function predictRisk() {
   if (previewProbability) {
     previewProbability.innerText = `${probabilityPercent}%`;
   }
+
+  const recommendedTis =
+    document.getElementById("recommended-tis");
+
+  const recommendedOpl =
+    document.getElementById("recommended-opl");
+
+  const recommendationReason =
+    document.getElementById("recommendation-reason");
+
+  const previewTis =
+    document.getElementById("preview-tis");
+
+  const previewOpl =
+    document.getElementById("preview-opl");
+
+if (recommendedTis) {
+  recommendedTis.innerText = learningPackage.tis;
+}
+
+if (recommendedOpl) {
+  recommendedOpl.innerText = learningPackage.opl;
+}
+
+if (recommendationReason) {
+  recommendationReason.innerText = learningPackage.reason;
+}
+
+if (previewTis) {
+  previewTis.innerText = learningPackage.tis;
+}
+
+if (previewOpl) {
+  previewOpl.innerText = learningPackage.opl;
+}
 
   if (previewLabel) {
     previewLabel.innerText = riskLevel;
