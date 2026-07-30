@@ -993,7 +993,11 @@ body {
                 <div class="row"><label>Experience Months</label><input id="experience" type="number" value="6" min="1" /></div>
               </div>
 
-              <button class="predict-button" onclick="predictRisk()">
+              <button
+                id="predict-button"
+                class="predict-button"
+                onclick="predictRisk()"
+              >
                 Generate Support Recommendation
               </button>
             </div>
@@ -1540,50 +1544,6 @@ function getLearningPackage(process, primaryDriver, riskLevel) {
   };
 }
 
-function calculateRiskProbability({
-  defectRate,
-  reworkRate,
-  trainingScore,
-  experienceMonths,
-  operatorLevel,
-  shift,
-  process
-}) {
-  let score = 10;
-
-  score += defectRate * 350;
-  score += reworkRate * 430;
-
-  score += Math.max(0, 80 - trainingScore) * 0.8;
-  score += Math.max(0, 12 - experienceMonths) * 1.1;
-
-  if (operatorLevel === "New") {
-    score += 9;
-  } else if (operatorLevel === "Intermediate") {
-    score += 3;
-  } else if (operatorLevel === "Experienced") {
-    score -= 5;
-  }
-
-  if (shift === "Gold Night") {
-    score += 7;
-  } else if (shift === "Blue Night") {
-    score += 4;
-  } else if (shift === "Gold Day") {
-    score += 1;
-  }
-
-  if (process === "Equipment Setup") {
-    score += 6;
-  } else if (process === "Quality Inspection") {
-    score += 4;
-  } else if (process === "Formation") {
-    score += 2;
-  }
-
-  return Math.round(clamp(score, 3, 97));
-}
-
 function updateRiskStyle(element, riskLevel) {
   element.classList.remove("low", "moderate");
 
@@ -1596,13 +1556,17 @@ function updateRiskStyle(element, riskLevel) {
   }
 }
 
-function predictRisk() {
+const API_BASE_URL = "https://dtmlak.onrender.com";
+
+async function predictRisk() {
+  const predictButton = document.getElementById("predict-button");
+
   const operatorId =
     document.getElementById("operatorId").value.trim() || "OP-000";
 
   const process = document.getElementById("process").value;
   const operatorLevel = document.getElementById("level").value;
-  const shift = document.getElementById("shift").value;
+  const shiftValue = document.getElementById("shift").value;
 
   const totalUnits = Math.max(
     1,
@@ -1630,52 +1594,130 @@ function predictRisk() {
     Number(document.getElementById("experience").value) || 0
   );
 
-  const defectRate = defectCount / totalUnits;
-  const reworkRate = reworkCount / totalUnits;
+  if (defectCount > totalUnits) {
+    alert("Defect count cannot exceed total units.");
+    return;
+  }
 
-  const probabilityPercent = calculateRiskProbability({
-    defectRate,
-    reworkRate,
-    trainingScore,
-    experienceMonths,
-    operatorLevel,
-    shift,
-    process
-  });
+  if (reworkCount > totalUnits) {
+    alert("Rework count cannot exceed total units.");
+    return;
+  }
 
-  const riskLevel = getRiskLevel(probabilityPercent);
+  const shiftMap = {
+    "Gold Day": "Day",
+    "Blue Day": "Day",
+    "Gold Night": "Night",
+    "Blue Night": "Night"
+  };
 
-  const primaryDriver = getPrimaryDriver({
-    defectRate,
-    reworkRate,
-    trainingScore,
-    experienceMonths,
-    operatorLevel,
-    shift,
-    process
-  });
+  const apiShift = shiftMap[shiftValue] || shiftValue;
 
-  const recommendation = getRecommendation({
-    riskLevel,
-    process,
-    defectRate,
-    reworkRate,
-    trainingScore,
-    experienceMonths
-  });
+  if (predictButton) {
+    predictButton.disabled = true;
+    predictButton.innerText = "Generating Recommendation...";
+  }
 
-  const learningPackage = getLearningPackage(
-  process,
+  try {
+    const response = await fetch(`${API_BASE_URL}/predict`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        process: process,
+        shift: apiShift,
+        operator_level: operatorLevel,
+        training_score: trainingScore,
+        experience_months: experienceMonths,
+        total_units: totalUnits,
+        defect_count: defectCount,
+        rework_count: reworkCount
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.detail || "Prediction request failed.");
+    }
+
+    const defectRate = result.defect_rate;
+    const reworkRate = result.rework_rate;
+    const probabilityPercent = result.confidence_percent;
+    const riskLevel =
+      `${result.support_priority} Support Priority`;
+
+    const primaryDriver = getPrimaryDriver({
+      defectRate,
+      reworkRate,
+      trainingScore,
+      experienceMonths,
+      operatorLevel,
+      shift: shiftValue,
+      process
+    });
+
+    const recommendation = getRecommendation({
+      riskLevel,
+      process,
+      defectRate,
+      reworkRate,
+      trainingScore,
+      experienceMonths
+    });
+
+    const learningPackage = getLearningPackage(
+      process,
+      primaryDriver,
+      riskLevel
+    );
+
+    updateDashboard({
+      operatorId,
+      probabilityPercent,
+      riskLevel,
+      defectRate,
+      reworkRate,
+      primaryDriver,
+      recommendation,
+      learningPackage
+    });
+  } catch (error) {
+    console.error("DTMLAK prediction error:", error);
+
+    alert(
+      "The prediction service could not be reached.\n\n" +
+      "Make sure FastAPI is running at:\n" +
+      "http://127.0.0.1:8000"
+    );
+  } finally {
+    if (predictButton) {
+      predictButton.disabled = false;
+      predictButton.innerText =
+        "Generate Support Recommendation";
+    }
+  }
+}
+
+function updateDashboard({
+  operatorId,
+  probabilityPercent,
+  riskLevel,
+  defectRate,
+  reworkRate,
   primaryDriver,
-  riskLevel
-);
-
-  const riskLabelElement = document.getElementById("risk-label");
+  recommendation,
+  learningPackage
+}) {
+  const riskLabelElement =
+    document.getElementById("risk-label");
 
   riskLabelElement.innerText = riskLevel;
   updateRiskStyle(riskLabelElement, riskLevel);
 
-  document.getElementById("operator-output").innerText = operatorId;
+  document.getElementById("operator-output").innerText =
+    operatorId;
 
   document.getElementById("probability").innerText =
     `${probabilityPercent}%`;
@@ -1695,6 +1737,15 @@ function predictRisk() {
   document.getElementById("primary-driver").innerText =
     primaryDriver;
 
+  document.getElementById("recommended-tis").innerText =
+    learningPackage.tis;
+
+  document.getElementById("recommended-opl").innerText =
+    learningPackage.opl;
+
+  document.getElementById("recommendation-reason").innerText =
+    learningPackage.reason;
+
   const previewProbability =
     document.getElementById("preview-probability");
 
@@ -1704,44 +1755,19 @@ function predictRisk() {
   const previewRecommendation =
     document.getElementById("preview-recommendation");
 
-  if (previewProbability) {
-    previewProbability.innerText = `${probabilityPercent}%`;
-  }
-
-  const recommendedTis =
-    document.getElementById("recommended-tis");
-
-  const recommendedOpl =
-    document.getElementById("recommended-opl");
-
-  const recommendationReason =
-    document.getElementById("recommendation-reason");
-
   const previewTis =
     document.getElementById("preview-tis");
 
   const previewOpl =
     document.getElementById("preview-opl");
 
-if (recommendedTis) {
-  recommendedTis.innerText = learningPackage.tis;
-}
+  const previewBar =
+    document.querySelector(".preview-bar div");
 
-if (recommendedOpl) {
-  recommendedOpl.innerText = learningPackage.opl;
-}
-
-if (recommendationReason) {
-  recommendationReason.innerText = learningPackage.reason;
-}
-
-if (previewTis) {
-  previewTis.innerText = learningPackage.tis;
-}
-
-if (previewOpl) {
-  previewOpl.innerText = learningPackage.opl;
-}
+  if (previewProbability) {
+    previewProbability.innerText =
+      `${probabilityPercent}%`;
+  }
 
   if (previewLabel) {
     previewLabel.innerText = riskLevel;
@@ -1749,23 +1775,26 @@ if (previewOpl) {
   }
 
   if (previewRecommendation) {
-    previewRecommendation.innerText = recommendation;
+    previewRecommendation.innerText =
+      recommendation;
   }
 
-  const previewBar =
-    document.querySelector(".preview-bar div");
+  if (previewTis) {
+    previewTis.innerText =
+      learningPackage.tis;
+  }
+
+  if (previewOpl) {
+    previewOpl.innerText =
+      learningPackage.opl;
+  }
 
   if (previewBar) {
-    previewBar.style.width = `${probabilityPercent}%`;
+    previewBar.style.width =
+      `${probabilityPercent}%`;
   }
 }
 
-document.querySelectorAll("input, select").forEach((element) => {
-  element.addEventListener("input", predictRisk);
-  element.addEventListener("change", predictRisk);
-});
-
-predictRisk();
 </script>
 </body>
 </html>

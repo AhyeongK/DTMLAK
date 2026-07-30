@@ -301,3 +301,64 @@ else:
 print("\nBest Model Selected:")
 print(best_model_name)
 
+
+# Save trained models and preprocessor
+random_forest_model_path = (
+    MODELS_DIR
+    / "random_forest_model.joblib"
+)
+
+xgboost_model_path = (
+    MODELS_DIR
+    / "xgboost_model.joblib"
+)
+
+preprocessor_path = (
+    MODELS_DIR
+    / "preprocessor.joblib"
+)
+
+best_model_path = (
+    MODELS_DIR
+    / "best_model.joblib"
+)
+
+
+# Save Random Forest
+joblib.dump(
+    rf_model,
+    random_forest_model_path
+)
+
+# Save XGBoost
+joblib.dump(
+    xgb_model,
+    xgboost_model_path
+)
+
+# Save fitted preprocessing pipeline
+joblib.dump(
+    preprocessor,
+    preprocessor_path
+)
+
+# Save the selected best model
+joblib.dump(
+    best_model,
+    best_model_path
+)
+
+
+print("\nModels saved successfully.")
+
+print("\nRandom Forest model:")
+print(random_forest_model_path)
+
+print("\nXGBoost model:")
+print(xgboost_model_path)
+
+print("\nPreprocessor:")
+print(preprocessor_path)
+
+print("\nSelected best model:")
+print(best_model_path)
